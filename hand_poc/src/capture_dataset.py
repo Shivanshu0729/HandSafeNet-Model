@@ -24,10 +24,10 @@ if not cap.isOpened():
 
 # If still not opened, exit program
 if not cap.isOpened():
-    print("❌ Camera FAILED to open. Make sure it is connected or free.")
+    print("Camera FAILED to open. Make sure it is connected or free.")
     exit()
 else:
-    print("✅ Camera opened successfully!")
+    print("Camera opened successfully!")
 
 # Counters for naming saved images
 hand_count = len(os.listdir(HAND_DIR))
