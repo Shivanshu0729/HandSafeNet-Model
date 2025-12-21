@@ -1,83 +1,155 @@
+"""
+====================================================================
+Hand / No-Hand Dataset Collection Script
+--------------------------------------------------------------------
+Description:
+    This script captures images from a webcam and stores them into
+    two separate folders:
+        1. Hand images
+        2. No-hand images
+
+    The collected dataset can be used for training machine learning
+    or computer vision models related to hand detection.
+
+Controls:
+    H  -> Capture and save a HAND image
+    N  -> Capture and save a NO-HAND image
+    Q  -> Exit the application
+
+Author:
+    Shivanshu Gangwar
+====================================================================
+"""
+
 import cv2
 import os
 
-# Base directory of the project (hand_poc folder)
+
+# ------------------------------------------------------------------
+# 1. PROJECT PATH CONFIGURATION
+# ------------------------------------------------------------------
+
+# Determine the base directory of the project (hand_poc folder)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Dataset folders
+# Define dataset directories
 HAND_DIR = os.path.join(BASE_DIR, "dataset", "hand")
 NO_HAND_DIR = os.path.join(BASE_DIR, "dataset", "no-hand")
 
-# Create folders if they don't exist
+# Ensure dataset directories exist
 os.makedirs(HAND_DIR, exist_ok=True)
 os.makedirs(NO_HAND_DIR, exist_ok=True)
 
-# Open webcam (try different indexes in case camera 0 is busy)
+
+# ------------------------------------------------------------------
+# 2. CAMERA INITIALIZATION
+# ------------------------------------------------------------------
+
+# Attempt to open webcam using DirectShow (recommended for Windows)
 cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+
+# Try alternative camera indices if the default fails
 if not cap.isOpened():
-    print("Camera did not open with index 0. Trying index 1...")
+    print("Camera index 0 unavailable. Trying index 1.")
     cap = cv2.VideoCapture(1, cv2.CAP_DSHOW)
 
+# Final fallback to default mode
 if not cap.isOpened():
-    print("Trying default camera mode...")
+    print("Trying default camera mode.")
     cap = cv2.VideoCapture(0)
 
-# If still not opened, exit program
+# Exit if camera still cannot be opened
 if not cap.isOpened():
-    print("❌ Camera FAILED to open. Make sure it is connected or free.")
+    print("Camera could not be opened. Please check device availability.")
     exit()
 else:
-    print("✅ Camera opened successfully!")
+    print("Camera initialized successfully.")
 
-# Counters for naming saved images
+
+# ------------------------------------------------------------------
+# 3. IMAGE COUNTERS FOR UNIQUE FILENAMES
+# ------------------------------------------------------------------
+
+# Initialize counters based on existing images
 hand_count = len(os.listdir(HAND_DIR))
 nohand_count = len(os.listdir(NO_HAND_DIR))
 
-print("\nInstructions:")
-print("Press H → Save HAND image")
-print("Press N → Save NO-HAND image")
-print("Press Q → Quit\n")
+
+# ------------------------------------------------------------------
+# 4. USER INSTRUCTIONS
+# ------------------------------------------------------------------
+
+print("\nApplication Controls:")
+print("H -> Save HAND image")
+print("N -> Save NO-HAND image")
+print("Q -> Quit application\n")
+
+
+# ------------------------------------------------------------------
+# 5. MAIN VIDEO CAPTURE LOOP
+# ------------------------------------------------------------------
 
 while True:
     ret, frame = cap.read()
+
     if not ret:
-        print("Failed to read camera frame.")
+        print("Failed to read frame from camera.")
         break
 
-    # Mirror effect so movement feels natural
+    # Flip frame horizontally for a natural mirror view
     frame = cv2.flip(frame, 1)
 
-    # Display instructions on screen
-    cv2.putText(frame, "H=Hand  N=NoHand  Q=Quit",
-                (10, 30), cv2.FONT_HERSHEY_SIMPLEX,
-                0.7, (0, 255, 0), 2)
+    # Display instructions on the video feed
+    cv2.putText(
+        frame,
+        "H=Hand | N=No-Hand | Q=Quit",
+        (10, 30),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        0.7,
+        (0, 255, 0),
+        2
+    )
 
+    # Show the camera feed
     cv2.imshow("Dataset Capture", frame)
+
     key = cv2.waitKey(1)
 
-    # Save hand images
+    # --------------------------------------------------------------
+    # Save HAND image
+    # --------------------------------------------------------------
     if key in [ord('h'), ord('H')]:
         img_path = os.path.join(HAND_DIR, f"hand_{hand_count}.jpg")
-        if cv2.imwrite(img_path, frame):
-            print(f"[SAVED HAND] {img_path}")
-        else:
-            print(f"[ERROR SAVING] {img_path}")
-        hand_count += 1
 
-    # Save no-hand images
+        if cv2.imwrite(img_path, frame):
+            print(f"Hand image saved: {img_path}")
+            hand_count += 1
+        else:
+            print(f"Failed to save hand image: {img_path}")
+
+    # --------------------------------------------------------------
+    # Save NO-HAND image
+    # --------------------------------------------------------------
     elif key in [ord('n'), ord('N')]:
         img_path = os.path.join(NO_HAND_DIR, f"no_hand_{nohand_count}.jpg")
-        if cv2.imwrite(img_path, frame):
-            print(f"[SAVED NO-HAND] {img_path}")
-        else:
-            print(f"[ERROR SAVING] {img_path}")
-        nohand_count += 1
 
-    # Quit program
+        if cv2.imwrite(img_path, frame):
+            print(f"No-hand image saved: {img_path}")
+            nohand_count += 1
+        else:
+            print(f"Failed to save no-hand image: {img_path}")
+
+    # --------------------------------------------------------------
+    # Exit application
+    # --------------------------------------------------------------
     elif key in [ord('q'), ord('Q')]:
-        print("Exiting...")
+        print("Exiting dataset collection.")
         break
 
-# Clean up camera and windows
+
+# ------------------------------------------------------------------
+# 6. RESOURCE CLEANUP
+# ------------------------------------------------------------------
+
 cap.release()
 cv2.destroyAllWindows()
