@@ -1,4 +1,4 @@
-🚀 HandSafeNet: Real-Time Hand Detection & Safety Alert System
+HandSafeNet: Real-Time Hand Detection & Safety Alert System
 
 HandSafeNet is an end-to-end Computer Vision and Deep Learning project that detects a user's hand and evaluates its proximity to a safety zone. Based on the distance, the system classifies the status as:
 
@@ -28,8 +28,8 @@ hand_poc/
 ├── requirements.txt          # Project dependencies
 └── README.md                 # Project documentation
 
-🧠 System Components
-1️⃣ Dataset Collection – src/capture_dataset.py
+System Components
+1️- Dataset Collection – src/capture_dataset.py
 
 This script lets you collect images for training the classifier.
 Controls:
@@ -45,7 +45,7 @@ Images are automatically stored in:
 dataset/hand/
 dataset/no-hand/
 
-2️⃣ Model Training – hand_training.py
+2️- Model Training – hand_training.py
 
 This script trains a Convolutional Neural Network (CNN) to classify images as:
 
@@ -69,7 +69,7 @@ The final trained model is saved at:
 
 model/hand_model.h5
 
-3️⃣ Real-Time Detection – main.py
+3️- Real-Time Detection – main.py
 
 This script performs:
 
@@ -84,16 +84,16 @@ Status	Condition	Color
 SAFE	Distance ≥ 350px	Green
 WARNING	150px–349px	Yellow
 DANGER	<150px OR hand enters box	Red
-🔧 Installation
-1️⃣ (Optional) Create and activate a virtual environment
+Installation
+1️- (Optional) Create and activate a virtual environment
 python -m venv venv
 venv\Scripts\activate    # Windows
 source venv/bin/activate # Mac/Linux
 
-2️⃣ Install dependencies
+2️- Install dependencies
 pip install -r requirements.txt
 
-▶️ How to Run the Project
+How to Run the Project
 Step 1 — Capture Dataset
 python src/capture_dataset.py
 
@@ -103,14 +103,14 @@ python hand_training.py
 Step 3 — Run Real-Time Detection
 python main.py
 
-🛠 Technologies Used
+Technologies Used
 Purpose	Library
 Image Processing	OpenCV
 Neural Networks	TensorFlow / Keras
 Numerical Computing	NumPy
 Data Handling	Scikit-learn
 Visualization	OpenCV overlays
-🌟 Use Cases
+Use Cases
 
 Industrial machinery safety
 
@@ -122,7 +122,7 @@ Touchless gesture interfaces
 
 Hazard distance monitoring
 
-👨‍💻 Author
+Author
 
 Shivanshu Gangwar
 Machine Learning & Computer Vision Developer
