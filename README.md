@@ -73,12 +73,13 @@ model/hand_model.h5
 
 This script performs:
 
-✔ Skin color auto-calibration
-✔ HSV mask generation
-✔ Contour & centroid detection
-✔ Distance measurement
-✔ Safety-zone classification
-✔ Live visualization
+- Skin color auto-calibration
+- HSV mask generation
+- Contour & centroid detection
+- Distance measurement
+- Safety-zone classification
+- Live visualization
+
 Status Logic
 Status	Condition	Color
 SAFE	Distance ≥ 350px	Green
@@ -127,6 +128,6 @@ Author
 Shivanshu Gangwar
 Machine Learning & Computer Vision Developer
 
-📌 Professional Summary
+Professional Summary
 
 HandSafeNet demonstrates a full ML workflow: dataset creation → CNN training → real-time computer vision system with logical decision-making.
